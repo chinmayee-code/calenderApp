@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
@@ -10,6 +10,7 @@ import {
   IInputProps,
   Image,
   Link,
+  Pressable,
   ScrollView,
   Text,
   useColorModeValue,
@@ -21,6 +22,13 @@ import {AppInput, Btn} from '~/components/core';
 import {IconProps} from '~/components/core/AppIcon';
 import {PublicRoutesTypes} from '~/routes';
 import useMutation from '~/hooks/useMutation';
+import {
+  GoogleSignin,
+  User,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {useAuth} from '~/hooks';
+import {TouchableOpacity} from 'react-native';
 
 type FormInput = {
   key: string;
@@ -39,6 +47,9 @@ export default function Register(): JSX.Element {
   const toast = useToast();
   const {mutation: register, isLoading} = useMutation();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [userInfo, setUserInfo] = useState<User | null>(null);
+  const {setToken, setUser, user} = useAuth();
+
   const {
     control,
     handleSubmit,
@@ -73,6 +84,52 @@ export default function Register(): JSX.Element {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signOut();
+      const userInfo: User = await GoogleSignin.signIn();
+      setUserInfo(userInfo);
+      // if (userInfo) {
+      //   const body:any = {
+      //     googleId: userInfo?.user?.id,
+      //     name: userInfo?.user?.name,
+      //     email: userInfo?.user?.email, // Handle the possibility of email being null
+      //     profileUrl: userInfo?.user?.photo,
+      //     googleAccessToken: userInfo?.idToken,
+      //   };
+      //   const result = await googleLogin(body);
+
+      //   // Add null check for result
+      //   if (result?.status === 'SUCCESS') {
+      //     setUser(result?.data?.user);
+      //     const accessToken = result?.data?.token;
+      //     await setToken(accessToken);
+      //   } else {
+      //     toast.show({
+      //       title: 'Failed',
+      //       description: result?.msg ?? 'Login failed',
+      //       duration: 5000,
+      //       bgColor: 'rose.500',
+      //     });
+      //   }
+      // }
+    } catch (error: any) {
+      // console.log(error);
+      // toast.show({
+      //   title: 'Failed',
+      //   description: 'Login Failed',
+      //   duration: 5000,
+      //   bgColor: 'rose.500',
+      // });
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log('Enable anonymous in your firebase console.');
+      }
+
+      console.error(error);
     }
   };
 
@@ -134,6 +191,17 @@ export default function Register(): JSX.Element {
     [secureTextEntry],
   );
 
+  useEffect(() => {
+    GoogleSignin.configure({
+      // Add your configuration options here
+      webClientId:
+        '744638834595-75hpnofor1rudkmvcos45l7v5177ha1g.apps.googleusercontent.com',
+      offlineAccess: true,
+      forceCodeForRefreshToken: true,
+      scopes: ['profile'],
+    });
+  }, []);
+
   return (
     <>
       <ScrollView
@@ -184,16 +252,27 @@ export default function Register(): JSX.Element {
                 borderRadius="10">
                 <ICONS.Facebook color="#3b5998" />
               </Link>
-              <Link
-                isUnderlined={false}
-                href="#"
+              <Pressable
                 borderColor="#f2f2f2"
                 borderWidth="1.5"
                 px="6"
                 py="3"
+                onPress={signIn}
                 borderRadius="10">
                 <ICONS.Email color="#BB001B" />
-              </Link>
+              </Pressable>
+              {/* <Box bgColor={'red.400'} p={1} rounded={2}>
+                <HStack space={10} alignItems={'center'}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      signIn();
+                    }}>
+                    <ICONS.Google size={20} />
+                  </TouchableOpacity>
+                  <Text color={'#fff'}>sign in</Text>
+                </HStack>
+              </Box> */}
+
               <Link
                 isUnderlined={false}
                 href="#"
