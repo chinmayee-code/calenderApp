@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "156913075971",
+    "project_id": "my-app-687ba",
+    "storage_bucket": "my-app-687ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156913075971:android:ea24147c168327b17d8b36",
+        "android_client_info": {
+          "package_name": "com.rnstarter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCwR4bnaw0mY5__L-ATXnh_W_P-lgvJOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
