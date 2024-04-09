@@ -22,13 +22,11 @@ import {AppInput, Btn} from '~/components/core';
 import {IconProps} from '~/components/core/AppIcon';
 import {PublicRoutesTypes} from '~/routes';
 import useMutation from '~/hooks/useMutation';
-import {
-  GoogleSignin,
-  User,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
+import {GoogleSignin, User} from '@react-native-google-signin/google-signin';
+
 import {useAuth} from '~/hooks';
 import {TouchableOpacity} from 'react-native';
+import {_signInWithGoogle} from '~/configs/Auth';
 
 type FormInput = {
   key: string;
@@ -87,51 +85,57 @@ export default function Register(): JSX.Element {
     }
   };
 
-  const signIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      await GoogleSignin.signOut();
-      const userInfo: User = await GoogleSignin.signIn();
-      setUserInfo(userInfo);
-      // if (userInfo) {
-      //   const body:any = {
-      //     googleId: userInfo?.user?.id,
-      //     name: userInfo?.user?.name,
-      //     email: userInfo?.user?.email, // Handle the possibility of email being null
-      //     profileUrl: userInfo?.user?.photo,
-      //     googleAccessToken: userInfo?.idToken,
-      //   };
-      //   const result = await googleLogin(body);
+  // useEffect(() => {
+  //   GoogleSignin.configure({
+  //     // Add your configuration options here
+  //     webClientId:
+  //       '368787988598-gsmvet798jb4e10gvaa0rhop80qg6a8t.apps.googleusercontent.com',
+  //     offlineAccess: true,
+  //     forceCodeForRefreshToken: true,
+  //     scopes: ['profile'],
+  //   });
+  // }, []);
 
-      //   // Add null check for result
-      //   if (result?.status === 'SUCCESS') {
-      //     setUser(result?.data?.user);
-      //     const accessToken = result?.data?.token;
-      //     await setToken(accessToken);
-      //   } else {
-      //     toast.show({
-      //       title: 'Failed',
-      //       description: result?.msg ?? 'Login failed',
-      //       duration: 5000,
-      //       bgColor: 'rose.500',
-      //     });
-      //   }
-      // }
-    } catch (error: any) {
-      // console.log(error);
-      // toast.show({
-      //   title: 'Failed',
-      //   description: 'Login Failed',
-      //   duration: 5000,
-      //   bgColor: 'rose.500',
-      // });
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log('Enable anonymous in your firebase console.');
-      }
+  // const signIn = async () => {
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     await GoogleSignin.signOut();
+  //     const userInfo: User = await GoogleSignin.signIn();
+  //     setUserInfo(userInfo);
+  //     if (userInfo) {
+  //       const body: any = {
+  //         googleId: userInfo?.user?.id,
+  //         name: userInfo?.user?.name,
+  //         email: userInfo?.user?.email, // Handle the possibility of email being null
+  //         profileUrl: userInfo?.user?.photo,
+  //         googleAccessToken: userInfo?.idToken,
+  //       };
+  //       // const result = await googleLogin(body);
 
-      console.error(error);
-    }
-  };
+  //       // // Add null check for result
+  //       // if (result?.status === 'SUCCESS') {
+  //       //   setUser(result?.data?.user);
+  //       //   const accessToken = result?.data?.token;
+  //       //   await setToken(accessToken);
+  //       // }else {
+  //       //   toast.show({
+  //       //     title: 'Failed',
+  //       //     description: result?.msg ?? 'Login failed',
+  //       //     duration: 5000,
+  //       //     bgColor: 'rose.500',
+  //       //   });
+  //       // }
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.show({
+  //       title: 'Failed',
+  //       description: 'Login Failed',
+  //       duration: 5000,
+  //       bgColor: 'rose.500',
+  //     });
+  //   }
+  // };
 
   const formInputs: FormInput[] = useMemo(
     () => [
@@ -191,16 +195,11 @@ export default function Register(): JSX.Element {
     [secureTextEntry],
   );
 
-  useEffect(() => {
-    GoogleSignin.configure({
-      // Add your configuration options here
-      webClientId:
-        '744638834595-75hpnofor1rudkmvcos45l7v5177ha1g.apps.googleusercontent.com',
-      offlineAccess: true,
-      forceCodeForRefreshToken: true,
-      scopes: ['profile'],
+  async function signInWithGoogle() {
+    _signInWithGoogle().then(data => {
+      console.log('hiiiiiii====>', data);
     });
-  }, []);
+  }
 
   return (
     <>
@@ -257,21 +256,10 @@ export default function Register(): JSX.Element {
                 borderWidth="1.5"
                 px="6"
                 py="3"
-                onPress={signIn}
+                onPress={() => signInWithGoogle()}
                 borderRadius="10">
                 <ICONS.Email color="#BB001B" />
               </Pressable>
-              {/* <Box bgColor={'red.400'} p={1} rounded={2}>
-                <HStack space={10} alignItems={'center'}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      signIn();
-                    }}>
-                    <ICONS.Google size={20} />
-                  </TouchableOpacity>
-                  <Text color={'#fff'}>sign in</Text>
-                </HStack>
-              </Box> */}
 
               <Link
                 isUnderlined={false}

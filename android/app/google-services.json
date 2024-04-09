@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "156913075971",
-    "project_id": "my-app-687ba",
-    "storage_bucket": "my-app-687ba.appspot.com"
+    "project_number": "674685894992",
+    "project_id": "calender-f92ee",
+    "storage_bucket": "calender-f92ee.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:156913075971:android:ea24147c168327b17d8b36",
+        "mobilesdk_app_id": "1:674685894992:android:955baf53f64d2f12a5ec55",
         "android_client_info": {
           "package_name": "com.rnstarter"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "674685894992-5s63kc4frlih28p5b99j2abuq32vasgg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBCwR4bnaw0mY5__L-ATXnh_W_P-lgvJOA"
+          "current_key": "AIzaSyBs_lBmUz6aaaZ-BBc2NLPMmS2wkiIauqY"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674685894992-5s63kc4frlih28p5b99j2abuq32vasgg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
