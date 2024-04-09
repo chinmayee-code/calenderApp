@@ -26,7 +26,7 @@ import {GoogleSignin, User} from '@react-native-google-signin/google-signin';
 
 import {useAuth} from '~/hooks';
 import {TouchableOpacity} from 'react-native';
-import {_signInWithGoogle} from '~/configs/Auth';
+// import {_signInWithGoogle} from '~/configs/Auth';
 
 type FormInput = {
   key: string;
@@ -195,11 +195,11 @@ export default function Register(): JSX.Element {
     [secureTextEntry],
   );
 
-  async function signInWithGoogle() {
-    _signInWithGoogle().then(data => {
-      console.log('hiiiiiii====>', data);
-    });
-  }
+  // async function signInWithGoogle() {
+  //   _signInWithGoogle().then(data => {
+  //     console.log('hiiiiiii====>', data);
+  //   });
+  // }
 
   return (
     <>
@@ -256,7 +256,7 @@ export default function Register(): JSX.Element {
                 borderWidth="1.5"
                 px="6"
                 py="3"
-                onPress={() => signInWithGoogle()}
+                // onPress={() => signInWithGoogle()}
                 borderRadius="10">
                 <ICONS.Email color="#BB001B" />
               </Pressable>
